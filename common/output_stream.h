@@ -44,6 +44,8 @@ private:
 
   SpvReflectToYaml(const SpvReflectToYaml&) = delete;
   SpvReflectToYaml(const SpvReflectToYaml&&) = delete;
+  SpvReflectToYaml & operator =(const SpvReflectToYaml&) = delete;
+  SpvReflectToYaml & operator =(SpvReflectToYaml&&) = delete;
   static std::string Indent(uint32_t level) {
     return std::string(2*level, ' ');
   }

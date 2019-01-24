@@ -35,6 +35,12 @@ struct TextLine {
   std::string           formatted_array_stride;
 };
 
+#if defined(_MSC_VER) && _MSC_VER < 1900
+//ntrf: these functions are not exactly interchangable, but the difference 
+//      should not affect this use case
+#  define snprintf sprintf_s
+#endif
+
 static std::string AsHexString(uint32_t n) {
   // std::iomanip can die in a fire.
   char out_word[11];
@@ -512,7 +518,7 @@ void ParseBlockMembersToTextLines(const char* indent, int indent_depth, bool fla
     std::string expanded_indent = ss_indent.str();
 
     const auto& member = p_members[member_index];
-    bool is_struct = member.type_description->type_flags & SPV_REFLECT_TYPE_FLAG_STRUCT;
+    bool is_struct = !!(member.type_description->type_flags & SPV_REFLECT_TYPE_FLAG_STRUCT);
     if (is_struct) {
       const std::string name = (member.name == nullptr ? "" : member.name);
 
